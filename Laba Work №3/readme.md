@@ -21,170 +21,82 @@
 3) Результаты анализа - содержит информацию о результатах анализа медицинских данных с использованием нейросети.
 4) Пользователь - хранит информацию о пользователях системы, такую как логин, пароль и роль (например, врач или администратор).
 5) Сессия - отслеживает активные сеансы работы пользователей в системе.
-![paps3-3 drawio](https://github.com/DenisShelby/paps_hse/assets/100212027/5ff6ae6e-588b-4978-becd-c99a5fa2e7cc)
+![paps3-3 drawio](https://github.com/DenisShelby/paps_hse/assets/100212027/e22bbb1b-c90f-41f4-a3ec-e5e0b58d6f7d)
 # Применение основных принципов разработки
-- # KISS
 Клиентский код:
- ```c#
-   // Простой и понятный код для отправки запроса на сервер и получения результатов анализа
-function analyzeLungDisease(data) {
-  // отправка данных на сервер для анализа
-  const result = server.analyzeData(data);
-  // отображение результатов анализа на веб-странице
-  displayResults(result);
-}
-  ```
+
+```javascript
+class DiagnosticsApp:
+    def __init__(self):
+        self.server_url = "http://example.com/api/diagnostics"
+    
+    def run(self):
+        patient_info = self.get_patient_info()
+        symptoms = self.get_symptoms()
+        diagnosis = self.send_diagnosis_request(patient_info, symptoms)
+        self.display_diagnosis(diagnosis)
+    
+    def get_patient_info(self):
+        # Здесь получаем информацию о пациенте от пользователя
+        pass
+    
+    def get_symptoms(self):
+        # Здесь получаем симптомы от пользователя
+        pass
+    
+    def send_diagnosis_request(self, patient_info, symptoms):
+        # Отправляем запрос на сервер с информацией о пациенте и симптомами
+        pass
+    
+    def display_diagnosis(self, diagnosis):
+        # Отображаем диагноз пациенту
+        pass
+
+app = DiagnosticsApp()
+app.run()
+```
+
+В клиентском коде были учтены следующие принципы:
+
+1. KISS (Keep It Simple, Stupid) - код прост и понятен. Он не содержит избыточных деталей и лишних сложностей, что упрощает его понимание и поддержку.
+
+2. YAGNI (You Ain't Gonna Need It) - код реализует только необходимый функционал для работы с приложением. Не добавлены ненужные фичи, которые могут привести к излишней сложности и перегрузке системы.
+
+3. DRY (Don't Repeat Yourself) - код структурирован таким образом, чтобы избежать дублирования кода. Методы get_patient_info, get_symptoms, send_diagnosis_request и display_diagnosis выделены в отдельные функции для повторного использования и улучшения поддерживаемости кода.
+
+4. SOLID - класс DiagnosticsApp следует принципу единственной ответственности, так как он отвечает только за запуск приложения и координацию работы других компонентов. Каждый метод класса выполняет только одну задачу. Также класс легко расширяем и поддерживаем, так как методы могут быть заменены или переопределены при необходимости.
+
 Серверный код:
- ```c#
-   // Минимальное количество страниц и простая навигация
-app.get('/analyze', (req, res) => {
-  res.render('analyze');
-});
 
-// Обработка запроса на анализ данных
-app.post('/analyze', (req, res) => {
-  const data = req.body;
-  // анализ данных с использованием нейросети
-  const result = neuralNetwork.analyze(data);
-  res.send(result);
-});
-}
-  ```
-- Принцип KISS был учтен при разработке клиентского и серверного кода путем создания минимального количества страниц и простой навигации на веб-сайте. Клиентский код представляет собой простую функцию для отправки данных на сервер и отображения результатов, в то время как серверный код обрабатывает запросы на анализ данных и возвращает результаты. Это делает использование приложения легким и понятным для пользователя, соответствуя принципу KISS.
-- # YAGNI
-Клиентский код:
-```c#
-// Функция отправки запроса на сервер
-function sendRequest(url, data) {
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(response => response.json())
-}
+```python
+from flask import Flask, request
 
-// Обработчик события отправки формы
-document.querySelector('form').addEventListener('submit', event => {
-  event.preventDefault()
-  
-  // Собираем данные из формы
-  const data = {
-    age: document.querySelector('#age').value,
-    gender: document.querySelector('#gender').value,
-    smoking: document.querySelector('#smoking').checked,
-    cough: document.querySelector('#cough').checked,
-    fever: document.querySelector('#fever').checked,
-    shortnessOfBreath: document.querySelector('#shortness-of-breath').checked
-  }
-  
-  // Отправляем запрос на сервер
-  sendRequest('/diagnose', data)
-    .then(result => {
-      // Выводим результат на страницу
-      document.querySelector('#result').textContent = result.message
-    })
-})
+app = Flask(__name__)
+
+@app.route("/api/diagnostics", methods=["POST"])
+def diagnose():
+    patient_info = request.json["patient_info"]
+    symptoms = request.json["symptoms"]
+    diagnosis = process_diagnosis(patient_info, symptoms)
+    return {"diagnosis": diagnosis}
+
+def process_diagnosis(patient_info, symptoms):
+    # Здесь обрабатываем информацию о пациенте и симптомы
+    pass
+
+if __name__ == "__main__":
+    app.run()
 ```
-Серверный код:
-```c#
-const express = require('express')
-const bodyParser = require('body-parser')
 
-const app = express()
+В серверном коде были учтены следующие принципы:
 
-// Парсер для тела запроса в формате JSON
-app.use(bodyParser.json())
+1. KISS (Keep It Simple, Stupid) - код сервера написан с использованием фреймворка Flask, который предоставляет простой и понятный способ создания веб-приложений. Код сервера минимален и выполняет только одну функцию - обработку запросов и отправку диагноза.
 
-// Обработчик POST-запроса на /diagnose
-app.post('/diagnose', (req, res) => {
-  const { age, gender, smoking, cough, fever, shortnessOfBreath } = req.body
-  
-  // Обучение нейросети и диагностика заболевания
-  
-  const result = { message: 'Вы здоровы' }
-  
-  res.json(result)
-})
+2. YAGNI (You Ain't Gonna Need It) - серверный код реализует только необходимый функционал для обработки запроса на диагностику. Не добавлены ненужные фичи, которые могут привести к излишней сложности и перегрузке системы.
 
-// Запуск сервера на порту 3000
-app.listen(3000, () => {
-  console.log('Сервер запущен на порту 3000')
-})
-```
-Принцип YAGNI (You Ain't Gonna Need It) означает, что необходимо писать только тот код, который действительно нужен для решения текущей задачи. В данном проекте этот принцип был учтен следующим образом:
-1) Клиентский код содержит только необходимый минимум для отправки данных на сервер и отображения результата на странице. Например, здесь нет лишних функций для валидации данных или обработки ошибок.
-2) Серверный код содержит только обработчик POST-запроса на /diagnose и минимальный набор операций для диагностики заболевания. Например, здесь нет лишних функций для сохранения данных в базе или обработки других типов запросов.
-- # DRY 
-Клиентский код:
-```c#
-// Функция для отправки запроса на сервер
-function sendDataToServer(data, endpoint) {
-  // отправка данных на сервер
-  return fetch(endpoint, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .catch(error => console.error('Error:', error));
-}
+3. DRY (Don't Repeat Yourself) - функция process_diagnosis выделена для обработки информации о пациенте и симптомах. Она может быть повторно использована в других частях кода, что улучшает поддерживаемость и избегает дублирования кода.
 
-// Функция для отображения результатов анализа
-function displayResults(result) {
-  // отображение результатов на веб-странице
-}
-```
-Серверный код:
-```c#
-// Обработка запроса на анализ данных
-app.post('/analyze', (req, res) => {
-  const data = req.body;
-  // анализ данных с использованием нейросети
-  const result = neuralNetwork.analyze(data);
-  res.send(result);
-});
-```
-- В данном случае, созданы отдельные функции для отправки данных на сервер и отображения результатов, которые могут быть повторно использованы в других частях приложения. Таким образом, избегаем повторения одного и того же кода в разных частях приложения, соответствуя принципу DRY.
-- # SOLID 
-Клиентский код:
-```c#
-// Интерфейс для отправки данных на сервер
-class DataSender {
-  sendDataToServer(data, endpoint) {
-    return fetch(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .catch(error => console.error('Error:', error));
-  }
-}
-
-// Интерфейс для отображения результатов анализа
-class ResultDisplayer {
-  displayResults(result) {
-    // отображение результатов на веб-странице
-  }
-}
-```
-Серверный код:
-```c#
-// Обработчик запроса на анализ данных
-app.post('/analyze', (req, res) => {
-  const data = req.body;
-  // анализ данных с использованием нейросети
-  const result = neuralNetwork.analyze(data);
-  res.send(result);
-});
-```
-В данном случае, испольщуется интерфейсы для отправки данных на сервер и отображения результатов анализа. Это позволяет соблюдать принцип SOLID, а именно принцип единственной ответственности (Single Responsibility Principle), так как каждый класс отвечает только за одну функцию - отправку данных или отображение результатов. Таким образом, избегается смешивания различных функциональностей в одном классе и делаем код более гибким и легким для поддержки и изменений.
+4. SOLID - код сервера построен на принципе единственной ответственности. Функция diagnose отвечает только за обработку запроса и возврат диагноза. Код легко расширяем и поддерживаем, так как функции могут быть заменены или переопределены при необходимости.
 # Дополнительные принципы разработки
 1) BDUF. Применимость: Отказ. При проектировании web-приложения для диагностирования легочных заболеваний, необходимо учитывать, что требования и технические решения могут меняться в процессе разработки. Поэтому масштабное проектирование прежде всего может привести к излишней сложности и избыточности, а также затруднить внесение изменений в процессе разработки.
 
